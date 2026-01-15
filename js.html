@@ -5,7 +5,7 @@
     if (table) table.remove();
 
     google.script.run
-      .withSuccessHandler(function (obj) {
+      .withSuccessHandler((obj) => {
         table = document.createElement('table');
         table.id = 'contactsTable';
 
