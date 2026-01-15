@@ -1,1 +1,55 @@
-<script></script>
+<script>
+  function createContactsTable() {
+    // create table
+    let table = document.getElementById('contactsTable');
+    if (table) table.remove();
+
+    google.script.run
+      .withSuccessHandler(function (obj) {
+        table = document.createElement('table');
+        table.id = 'contactsTable';
+
+        let tabHead = document.createElement('thead');
+        let tabBody = document.createElement('tbody');
+
+        for (let i = 0; i < obj.length; i++) {
+          let row = document.createElement('tr');
+          for (let j = 0; j < obj[i].length; j++) {
+            let cell = document.createElement('td');
+            cell.textContent = obj[i][j];
+            row.appendChild(cell);
+          }
+          if (i === 0) {
+            tabHead.appendChild(row);
+            table.appendChild(tabHead);
+          } else tabBody.appendChild(row);
+        }
+
+        // Array.from(obj).forEach((currentRow, i) => {
+        //   let row = document.createElement('tr');
+        //   currentRow.forEach((currentCell) => {
+        //     let cell = document.createElement('td');
+        //     cell.textContent = currentCell;
+        //     row.appendChild(cell);
+        //   });
+        //   if (i === 0) {
+        //     tabHead.appendChild(row);
+        //     table.appendChild(tabHead);
+        //   } else tabBody.appendChild(row);
+        // });
+
+        // append head to table
+        tabHead.classList.add('table-dark');
+
+        // append body to table
+        table.appendChild(tabBody);
+
+        // append classes to table
+        table.classList.add('table', 'table-striped', 'border', 'border-3');
+
+        // append table to page
+        document.getElementById('divContacts').appendChild(table);
+      })
+      .getContacts();
+  }
+</script>
