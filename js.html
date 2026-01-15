@@ -12,17 +12,25 @@
         let tabHead = document.createElement('thead');
         let tabBody = document.createElement('tbody');
 
-        for (let i = 0; i < obj.length; i++) {
+        // create header row
+        let firstRow = document.createElement('tr');
+        for (let i = 0; i < obj[0].length; i++) {
+          let cell = document.createElement('td');
+          cell.textContent = obj[0][i];
+          firstRow.appendChild(cell);
+        }
+        tabHead.appendChild(firstRow);
+        table.appendChild(tabHead);
+
+        // create body rows
+        for (let i = 1; i < obj.length; i++) {
           let row = document.createElement('tr');
           for (let j = 0; j < obj[i].length; j++) {
             let cell = document.createElement('td');
             cell.textContent = obj[i][j];
             row.appendChild(cell);
           }
-          if (i === 0) {
-            tabHead.appendChild(row);
-            table.appendChild(tabHead);
-          } else tabBody.appendChild(row);
+          tabBody.appendChild(row);
         }
 
         // Array.from(obj).forEach((currentRow, i) => {
