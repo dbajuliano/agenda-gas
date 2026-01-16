@@ -6,4 +6,18 @@
 
   <!-- Table of contacts -->
   <div class="container-sm mb-4 w-50" id="divContacts"></div>
+
+  <!-- Live Toast Notifications -->
+  <div class="position-fixed bottom-0 end-0 p-3">
+    <!-- Toast -->
+    <div id="notification" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header p-0">
+        <div class="toast-icon p-0"><i id="toastIcon"> </i></div>
+        <strong class="me-auto" id="toastTitle">Bootstrap</strong>
+        <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+
+      <div class="toast-body" id="toastText"></div>
+    </div>
+  </div>
 </main>

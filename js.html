@@ -4,60 +4,74 @@
     let table = document.getElementById('contactsTable');
     if (table) table.remove();
 
-    google.script.run
-      .withSuccessHandler((obj) => {
-        table = document.createElement('table');
-        table.id = 'contactsTable';
+    google.script.run.withSuccessHandler(createContactsTableCorrect).withFailureHandler(createContactsTableError).getContacts();
+  }
 
-        let tabHead = document.createElement('thead');
-        let tabBody = document.createElement('tbody');
+  function createContactsTableCorrect(obj) {
+    table = document.createElement('table');
+    table.id = 'contactsTable';
 
-        // create header row
-        let firstRow = document.createElement('tr');
-        for (let i = 0; i < obj[0].length; i++) {
-          let cell = document.createElement('td');
-          cell.textContent = obj[0][i];
-          firstRow.appendChild(cell);
-        }
-        tabHead.appendChild(firstRow);
-        table.appendChild(tabHead);
+    let tabHead = document.createElement('thead');
+    let tabBody = document.createElement('tbody');
 
-        // create body rows
-        for (let i = 1; i < obj.length; i++) {
-          let row = document.createElement('tr');
-          for (let j = 0; j < obj[i].length; j++) {
-            let cell = document.createElement('td');
-            cell.textContent = obj[i][j];
-            row.appendChild(cell);
-          }
-          tabBody.appendChild(row);
-        }
+    // create header row
+    let firstRow = document.createElement('tr');
+    for (let i = 0; i < obj[0].length; i++) {
+      let cell = document.createElement('td');
+      cell.textContent = obj[0][i];
+      firstRow.appendChild(cell);
+    }
+    tabHead.appendChild(firstRow);
+    table.appendChild(tabHead);
 
-        // Array.from(obj).forEach((currentRow, i) => {
-        //   let row = document.createElement('tr');
-        //   currentRow.forEach((currentCell) => {
-        //     let cell = document.createElement('td');
-        //     cell.textContent = currentCell;
-        //     row.appendChild(cell);
-        //   });
-        //   if (i === 0) {
-        //     tabHead.appendChild(row);
-        //     table.appendChild(tabHead);
-        //   } else tabBody.appendChild(row);
-        // });
+    // create body rows
+    for (let i = 1; i < obj.length; i++) {
+      let row = document.createElement('tr');
+      for (let j = 0; j < obj[i].length; j++) {
+        let cell = document.createElement('td');
+        cell.textContent = obj[i][j];
+        row.appendChild(cell);
+      }
+      tabBody.appendChild(row);
+    }
 
-        // append head to table
-        tabHead.classList.add('table-dark');
+    // append head to table
+    tabHead.classList.add('table-dark');
 
-        // append body to table
-        table.appendChild(tabBody);
+    // append body to table
+    table.appendChild(tabBody);
 
-        // append classes to table
-        table.classList.add('table', 'table-striped', 'border', 'border-3');
+    // append classes to table
+    table.classList.add('table', 'table-striped', 'border', 'border-3');
 
-        // append table to page
-        document.getElementById('divContacts').appendChild(table);
-      })
-      .getContacts();
+    // append table to page
+    document.getElementById('divContacts').appendChild(table);
+
+    // display success message
+    showToast(1, 'Contacts loaded successfully!', 'success');
+  }
+
+  function createContactsTableError(err) {
+    // display error message
+    console.log('Error: ' + err);
+  }
+
+  function showToast(title, text, iconClass) {
+    //get data
+    let toastText = document.getElementById('toastText');
+    let toastTitle = document.getElementById('toastTitle');
+    let toastElement = document.getElementById('notification');
+    let toastIcon = document.getElementById('toastIcon');
+    let notification = bootstrap.Toast.getOrCreateInstance(toastElement);
+
+    //set notification
+    toastIcon.className = '';
+    toastIcon.classList.add('bi', 'bi-check2-square');
+    toastText.textContent = text;
+    toastTitle.textContent = title;
+    toastElement.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--dark-green-color');
+
+    //show notification
+    notification.show();
   }
 </script>
